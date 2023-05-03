@@ -9,6 +9,7 @@ describe Player do
       before do
         choice = '1'
         allow(player).to receive(:gets).and_return(choice)
+        allow(player).to receive(:print_pick_color_message)
       end
 
       it 'sets player color to black smiley unicode value' do
@@ -24,6 +25,7 @@ describe Player do
       before do
         choice = '2'
         allow(player).to receive(:gets).and_return(choice)
+        allow(player).to receive(:print_pick_color_message)
       end
 
       it 'sets player color to white smilye unicode value' do
@@ -31,6 +33,40 @@ describe Player do
         white_smiley_unicode = "\u263B"
         result = player.instance_variable_get(:@color)
         expect(result).to eq(white_smiley_unicode)
+      end
+    end
+
+    context 'when player types invalid input then valid input' do
+
+      before do
+        invalid_input = '3'
+        valid_input = '2'
+        allow(player).to receive(:gets).and_return(invalid_input, valid_input)
+        allow(player).to receive(:print_pick_color_message)
+      end
+
+      it 'completes loop and displays error message once' do
+        error_message = 'please type 1 for black or 2 for white'
+        expect(player).to receive(:puts).with(error_message).once
+        player.pick_color
+      end
+    end
+
+    context 'when player types 3 invalid inputs and then a valid input' do
+
+      before do
+        invalid_input = 'A'
+        invalid_input_2 = '0'
+        invalid_input_3 = ''
+        valid_input = '1'
+        allow(player).to receive(:gets).and_return(invalid_input, invalid_input_2, invalid_input_3, valid_input)
+        allow(player).to receive(:print_pick_color_message)
+      end
+
+      it 'completes loop and displays error message 3 times' do
+        error_message = 'please type 1 for black or 2 for white'
+        expect(player).to receive(:puts).with(error_message).thrice
+        player.pick_color
       end
     end
   end
