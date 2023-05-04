@@ -15,5 +15,9 @@ class Board
       puts row.join(' | ')
     end
   end
+
+
 end
 
+board = Board.new
+board.display_board

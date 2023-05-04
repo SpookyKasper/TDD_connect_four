@@ -34,9 +34,9 @@ class Player
 
   def pick_column_message
     puts <<~HEREDOC
+
       \e[93mSo #{self.name} in whic column do you want to play your stone?
       Please pick a column number from 1 to 7\e[0m
-
     HEREDOC
   end
 
