@@ -1,16 +1,17 @@
 
-
-
 class Player
   BLACK_SMILEY = "\u263A"
   WHITE_SMILEY = "\u263B"
 
-  def initalize
+  attr_reader :name
+
+  def initalize(name)
+    @name = name
     @color = nil
   end
 
   def pick_color
-    print_pick_color_message
+    pick_color_message
     input = gets.chomp
     until [1, 2].include?(input.to_i)
       puts 'please type 1 for black or 2 for white'
@@ -20,7 +21,26 @@ class Player
     @color = input == '1' ? BLACK_SMILEY : WHITE_SMILEY
   end
 
-  def print_pick_color_message
+  def pick_column
+    pick_column_message
+    input = gets.chomp
+    until (1..7).include?(input.to_i)
+      puts 'Please pick a valid column number, between 1 and 7'
+      input = gets.chomp
+    end
+
+    input
+  end
+
+  def pick_column_message
+    puts <<~HEREDOC
+      \e[93mSo #{self.name} in whic column do you want to play your stone?
+      Please pick a column number from 1 to 7\e[0m
+
+    HEREDOC
+  end
+
+  def pick_color_message
     puts <<~HEREDOC
 
       \e[93mHey there connect four enthusiasts! ready for rumble?

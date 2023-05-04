@@ -7,6 +7,13 @@ class Board
   end
 
   def create_board
-    Array.new(6, Array.new(7, nil))
+    Array.new(6, Array.new(7, 'O'))
+  end
+
+  def display_board
+    @board.each do |row|
+      puts row.join(' | ')
+    end
   end
 end
+
