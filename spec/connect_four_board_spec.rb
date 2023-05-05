@@ -1,4 +1,5 @@
 require_relative '../lib/connect_four_board.rb'
+require_relative '../lib/connect_four_player.rb'
 
 describe Board do
   subject(:board) { described_class.new }
