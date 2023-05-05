@@ -4,7 +4,6 @@ class Board
 
   def initialize
     @board = create_board
-    @winner = nil
   end
 
   def create_board
@@ -15,10 +14,6 @@ class Board
     @board.each do |row|
       puts row.join(' | ')
     end
-  end
-
-  def game_over?
-    @winner || is_full?
   end
 
   def is_full?
