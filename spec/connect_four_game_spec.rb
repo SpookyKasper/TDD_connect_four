@@ -10,6 +10,7 @@ describe Connect_Four_Game do
   describe '#game_over?' do
     context 'when some player won' do
       context 'when board is full' do
+
         before do
           game_win.instance_variable_set(:@winner, player_1)
           allow(board).to receive(:is_full?).and_return(true)
@@ -22,6 +23,7 @@ describe Connect_Four_Game do
       end
 
       context 'when board is not full' do
+
         before do
           game_win.instance_variable_set(:@winner, player_1)
           allow(board).to receive(:is_full?).and_return(false)
@@ -36,8 +38,27 @@ describe Connect_Four_Game do
 
     context 'when no player won' do
       context 'when board is full' do
+
+        before do
+          allow(board).to receive(:is_full?).and_return(true)
+        end
+
+        it 'returns true' do
+          result = game_win.game_over?
+          expect(result).to be(true)
+        end
       end
+
       context 'when board is not full' do
+
+        before do
+          allow(board).to receive(:is_full?).and_return(false)
+        end
+
+        it 'returns false' do
+          result = game_win.game_over?
+          expect(result).to be(false)
+        end
       end
     end
   end
