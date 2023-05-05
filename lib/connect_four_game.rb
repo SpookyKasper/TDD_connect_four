@@ -13,5 +13,6 @@ class Connect_Four_Game
     !@winner.nil? || @board.is_full?
   end
 
-
+  def check_for_winning_row
+  end
 end

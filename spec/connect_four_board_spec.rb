@@ -22,4 +22,7 @@ describe Board do
       expect(board.board.flatten.all?(nil))
     end
   end
+
+  describe '#place_stone' do
+  end
 end
