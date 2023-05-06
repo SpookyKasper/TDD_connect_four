@@ -17,9 +17,10 @@ class Board
     end
   end
 
-  def place_stone(column, stone)
-    row_index = find_free_row(column)
-    column_index = column - 1
+  def place_stone(column_num, stone)
+    column = @board.transpose[column_num]
+    row_index = find_free_row_index(column, @empty_cell)
+    column_index = column_num - 1
     @board[row_index][column_index] = stone
   end
 
@@ -28,13 +29,6 @@ class Board
     free_row = busy_row.nil? ? column.size - 1 : busy_row - 1
     free_row < 0 ? nil : free_row
   end
-
-  # def find_free_row(column_num)
-  #   column = @board.transpose
-  #   column = columns[column_num]
-  #   free_row = column.find_index { |cell| cell != 'O'}
-  #   free_row.nil? ? board.size - 1 : free_row
-  # end
 
   def is_full?
   end
