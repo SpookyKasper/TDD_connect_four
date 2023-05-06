@@ -25,7 +25,8 @@ class Board
 
   def find_free_row_index(column, empty_cell)
     busy_row = column.find_index { |cell| cell != @empty_cell}
-    busy_row.nil? ? column.size - 1 : busy_row - 1
+    free_row = busy_row.nil? ? column.size - 1 : busy_row - 1
+    free_row < 0 ? nil : free_row
   end
 
   # def find_free_row(column_num)

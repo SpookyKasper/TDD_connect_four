@@ -26,14 +26,43 @@ describe Board do
   describe '#find_free_row_index' do
     context 'when column is empty' do
       it 'returns 5' do
-        column = ['O', 'O', 'O', 'O', 'O', 'O']
         empty_cell = 'O'
+        column = Array.new(6, empty_cell)
         result = board.find_free_row_index(column, empty_cell)
         expect(result).to eq(5)
       end
     end
 
-    context 'when '
+    context 'when column has one stone' do
+      it 'returns 4' do
+        stone = '\u263A'
+        empty_cell = 'O'
+        column = Array.new(6, empty_cell)
+        column[5] = stone
+        result = board.find_free_row_index(column, empty_cell)
+        expect(result).to eq(4)
+      end
+    end
+
+    context 'when columns has 3 stones' do
+      it 'returns 2' do
+        stone = '\u263A'
+        empty_cell = 'O'
+        column = [empty_cell, empty_cell, empty_cell, stone, stone, stone]
+        result = board.find_free_row_index(column, empty_cell)
+        expect(result).to eq(2)
+      end
+    end
+
+    context 'when column is full' do
+      it 'returns nil' do
+        stone = '\u263A'
+        empty_cell = 'O'
+        column = Array.new(6, stone)
+        result = board.find_free_row_index(column, empty_cell)
+        expect(result).to eq(nil)
+      end
+    end
   end
 
   describe '#find_free_row' do
