@@ -16,6 +16,15 @@ class Board
     end
   end
 
+  def place_stone(column, stone)
+    row_index = find_free_row(column)
+    column_index = column - 1
+    @board[row_index][column_index] = stone
+  end
+
+  def find_free_row(column)
+  end
+
   def is_full?
   end
 end

@@ -24,5 +24,21 @@ describe Board do
   end
 
   describe '#place_stone' do
+    context 'when selected column is 3' do
+      context 'when board is empty' do
+        before do
+          column = 3
+          free_row = 5
+          allow(board).to receive(:find_free_row).with(column).and_return(free_row)
+        end
+
+        it 'places stone in the last row, third column' do
+          column = 3
+          stone = "\u263A"
+          empty_cell = 'O'
+          expect{ board.place_stone(column, stone) }.to change { board.board[5][2] }.from(empty_cell).to(stone)
+        end
+      end
+    end
   end
 end
