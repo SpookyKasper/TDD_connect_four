@@ -23,6 +23,42 @@ describe Board do
     end
   end
 
+  describe '#find_free_row_index' do
+    context 'when column is empty' do
+      it 'returns 5' do
+        column = ['O', 'O', 'O', 'O', 'O', 'O']
+        empty_cell = 'O'
+        result = board.find_free_row_index(column, empty_cell)
+        expect(result).to eq(5)
+      end
+    end
+
+    context 'when '
+  end
+
+  describe '#find_free_row' do
+    context 'when column is 4 and there is no stone in the column' do
+      it 'returns 5' do
+        column = 4
+        result = board.find_free_row(column)
+        expect(result).to eq(5)
+      end
+    end
+
+    context 'when column is 4 and there is 2 stones in the 4th column' do
+      before do
+        stone = "\u263A"
+        board.board[5][3] = stone
+        board.board[4][3] = stone
+      end
+      it 'returns 3' do
+        column = 4
+        result = board.find_free_row(column)
+        expect(result).to eq(3)
+      end
+    end
+  end
+
   describe '#place_stone' do
     context 'when selected column is 3' do
       context 'when board is empty' do
