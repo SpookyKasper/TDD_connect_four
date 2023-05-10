@@ -105,4 +105,149 @@ describe Board do
       end
     end
   end
+
+  describe '#get_positive_diagonal' do
+    context 'when working on a numbered board' do
+
+      before do
+        my_board = [
+          [1,   2,  3,  4,  5,  6,  7],
+          [8,   9, 10, 11, 12, 13, 14],
+          [15, 16, 17, 18, 19, 20, 21],
+          [22, 23, 24, 25, 26, 27, 28],
+          [29, 30, 31, 32, 33, 34, 35],
+          [36, 37, 38, 39, 40, 41, 42]
+        ]
+        board.instance_variable_set(:@board, my_board)
+      end
+
+      context 'when given [0, 0] as a start index' do
+        it 'returns [1, 9, 17, 25, 33, 41]' do
+          coordinates = [0, 0]
+          result = board.get_positive_diagonal(coordinates)
+          expectation = [1, 9, 17, 25, 33, 41]
+          expect(result).to eq(expectation)
+        end
+      end
+
+      context 'when given [0, 1] as a start index' do
+        it 'returns [2, 10, 18, 26, 34, 42]' do
+          coordinates = [0, 1]
+          result = board.get_positive_diagonal(coordinates)
+          expectation = [2, 10, 18, 26, 34, 42]
+          expect(result).to eq(expectation)
+        end
+      end
+
+      context 'when given [0, 5] as a start index' do
+        it 'returns [6, 14]' do
+          coordinates = [0, 5]
+          result = board.get_positive_diagonal(coordinates)
+          expectation = [6, 14]
+          expect(result).to eq(expectation)
+        end
+      end
+
+      context 'when given [1, 0] as a start index' do
+        it 'returns [8, 16, 24, 32]' do
+          coordinates = [1, 0]
+          result = board.get_positive_diagonal(coordinates)
+          expectation = [8, 16, 24, 32, 40]
+          expect(result).to eq(expectation)
+        end
+      end
+    end
+  end
+
+  describe '#get_board_diagonals' do
+    context 'when on a connect_four board' do
+
+      before do
+        my_board = [
+          [1,   2,  3,  4,  5,  6,  7],
+          [8,   9, 10, 11, 12, 13, 14],
+          [15, 16, 17, 18, 19, 20, 21],
+          [22, 23, 24, 25, 26, 27, 28],
+          [29, 30, 31, 32, 33, 34, 35],
+          [36, 37, 38, 39, 40, 41, 42]
+        ]
+        board.instance_variable_set(:@board, my_board)
+      end
+
+      it 'returns 12 diagonals' do
+        diagonals = board.get_board_diagonals
+        result = diagonals.size
+        expect(result).to eq(12)
+      end
+    end
+  end
+
+  describe '#get_negative_diagonal' do
+    context 'when working on a numbered board' do
+
+      before do
+        my_board = [
+          [1,   2,  3,  4,  5,  6,  7],
+          [8,   9, 10, 11, 12, 13, 14],
+          [15, 16, 17, 18, 19, 20, 21],
+          [22, 23, 24, 25, 26, 27, 28],
+          [29, 30, 31, 32, 33, 34, 35],
+          [36, 37, 38, 39, 40, 41, 42]
+        ]
+        board.instance_variable_set(:@board, my_board)
+      end
+
+      context 'when given [0, 6] as a start index' do
+        it 'returns [7, 13, 19, 25, 31, 37]' do
+          coordinates = [0, 6]
+          result = board.get_negative_diagonal(coordinates)
+          expectation = [7, 13, 19, 25, 31, 37]
+          expect(result).to eq(expectation)
+        end
+      end
+
+      context 'when given [2, 6] as a start index' do
+        it 'returns [21, 27, 33, 39]' do
+          coordinates = [2, 6]
+          result = board.get_negative_diagonal(coordinates)
+          expectation = [21, 27, 33, 39]
+          expect(result).to eq(expectation)
+        end
+      end
+
+      context 'when given [0, 4] as a start index' do
+        it 'returns [5, 11, 17, 23, 29]' do
+          coordinates = [0, 4]
+          result = board.get_negative_diagonal(coordinates)
+          expectation = [5, 11, 17, 23, 29]
+          expect(result).to eq(expectation)
+        end
+      end
+    end
+  end
+
+  describe '#is_full?' do
+    context 'when board is full' do
+      before do
+        board.instance_variable_set(:@board, board.create_board)
+        board.instance_variable_set(:@empty_cell, 'O')
+      end
+      it 'returns true' do
+        result = board.is_full?
+        expect(result).to eq(true)
+      end
+    end
+
+    context 'when board is empty' do
+      it 'returns false' do
+        result = board.is_full?
+        expect(result).to eq(false )
+      end
+    end
+
+    context 'when board is almost full' do
+      it 'returns false' do
+      end
+    end
+  end
 end

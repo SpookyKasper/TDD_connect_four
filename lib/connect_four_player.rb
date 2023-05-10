@@ -3,11 +3,11 @@ class Player
   BLACK_SMILEY = "\u263A"
   WHITE_SMILEY = "\u263B"
 
-  attr_reader :name
+  attr_reader :name, :color
 
-  def initalize(name)
+  def initalize(name, color = nil)
     @name = name
-    @color = nil
+    @color = color
   end
 
   def pick_color
