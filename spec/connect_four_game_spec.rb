@@ -5,8 +5,8 @@ require 'matrix'
 
 describe Connect_Four_Game do
   let(:board) { instance_double(Board, empty_cell: 'O') }
-  let(:player_1) { instance_double(Player, name: 'Daniel')}
-  let(:player_2) { instance_double(Player, name: 'Ivan')}
+  let(:player_1) { instance_double(Player, name: 'Daniel', color: "\u263A")}
+  let(:player_2) { instance_double(Player, name: 'Ivan', color: "\u263B")}
   subject(:game) { described_class.new(board, player_1, player_2) }
 
   describe '#game_over?' do
@@ -353,87 +353,118 @@ describe Connect_Four_Game do
 
     describe '#check_for_winning_diagonal' do
       context 'when there is no winning diagonal' do
-        context 'when board is empty' do
-
-          before do
-            allow(board).to receive(:board).and_return(Array.new(6) { Array.new(7, 'O')})
-          end
-
-          it 'returns nil' do
-            result = game.check_for_winning_diagonal
-            expect(result).to be_nil
-          end
+        before do
+          allow(board).to receive(:get_board_diagonals).and_return(
+            [['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+          )
         end
-        context 'when board is partially filled' do
-        end
-        context 'when board is full' do
+
+        it 'returns nil' do
+          result = game.check_for_winning_diagonal
+          expect(result).to be_nil
         end
       end
 
       context 'when there is a winning diagonal' do
-        context 'when in the middle of the board' do
-          before do
-            allow(board).to receive(:board).and_return([
-              ['O', 'O', 'O', 'O', 'O', 'O', 'O'],
-              ['O', 'O', 'O', 'O', 'O', 'O', 'O'],
-              ['O', 'X', 'O', 'O', 'O', 'O', 'O'],
-              ['O', 'O', 'X', 'O', 'O', 'O', 'O'],
-              ['O', 'O', 'O', 'X', 'O', 'O', 'O'],
-              ['O', 'O', 'O', 'O', 'X', 'O', 'O'],
-            ])
-          end
-
-          it 'returns winning stone' do
-            result = game.check_for_winning_diagonal
-            expect(result).to eq('X')
-          end
+        before do
+          allow(board).to receive(:get_board_diagonals).and_return(
+            [['O', 'O', 'O', 'P' 'O'],
+            ['X', 'X', 'X', 'X', 'O']])
         end
 
-        context 'when in a side when board is full' do
+        it 'returns winning stone' do
+          result = game.check_for_winning_diagonal
+          expect(result).to eq('X')
         end
       end
     end
   end
 
-  #   context 'when board has a winning row in the last row' do
-  #     let(:board) { instance_double(Board) }
-  #     let(:player_1) { instance_double(Player) }
-  #     let(:player_2) { instance_double(Player) }
-  #     let(:game) { described_class.new(board, player_1, player_2)}
+  describe '#somebody_won?' do
+    context 'when there is a winning diagonal' do
+      before do
+        stone = "\u263A"
+        allow(game).to receive(:check_for_winning_diagonal).and_return(stone)
+        allow(game).to receive(:check_for_winning_row).and_return(nil)
+        allow(game).to receive(:check_for_winning_column).and_return(nil)
+      end
 
-  #     before do
-  #       allow(player_1).to receive(:color).and_return("\u263A")
-  #     end
+      it 'returns true' do
+        result = game.somebody_won?
+        expect(result).to be(true)
+      end
+    end
 
-  #     it 'returns winning stone' do
-  #       result = game.check_for_winning_row
-  #       stone = player_1.color
-  #       expect(result).to eq(stone)
-  #     end
-  #   end
-  # end
-  # describe '#play_move' do
-  #   let(:board) { instance_double(Board) }
-  #   let(:player_1) { instance_double(Player, name: 'Daniel') }
-  #   let(:player_2) { instance_double(Player, name: 'Ivan') }
-  #   subject(:game) { described_class.new(board, player_1, player_2) }
+    context 'when there is a winning row' do
+      before do
+        stone = "\u263A"
+        allow(game).to receive(:check_for_winning_diagonal).and_return(nil)
+        allow(game).to receive(:check_for_winning_row).and_return(stone)
+        allow(game).to receive(:check_for_winning_column).and_return(nil)
+      end
 
-  #   context 'when player 1 plays a stone in column 3 and column is empty' do
+      it 'returns true' do
+        result = game.somebody_won?
+        expect(result).to be(true)
+      end
+    end
 
-  #     before do
-  #       stone = "\u263A"
-  #       player_1.instance_variable_set(:@color, stone)
-  #       allow(board).to receive(:board).and_return(Array.new(6) { Array.new(7, 'O')})
-  #       allow(player_1).to receive(:color).and_return(stone)
-  #       allow(board).to receive(:place_stone).and change { }
-  #     end
+    context 'when there is a winning column' do
+      before do
+        stone = "\u263A"
+        allow(game).to receive(:check_for_winning_diagonal).and_return(nil)
+        allow(game).to receive(:check_for_winning_row).and_return(nil)
+        allow(game).to receive(:check_for_winning_column).and_return(stone)
+      end
 
-  #     it 'changes the last row of the board from an empty cell to the player color' do
-  #       column = 7
-  #       empty_cell = 'O'
-  #       player_1_color = player_1.instance_variable_get(:@color)
-  #       expect { game.play_move(player_1, column) }.to change { board.board[5][6] }.from(empty_cell).to(player_1_color)
-  #     end
-  #   end
-  # end
+      it 'returns true' do
+        result = game.somebody_won?
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when nobody won' do
+      before do
+        allow(game).to receive(:check_for_winning_diagonal).and_return(nil)
+        allow(game).to receive(:check_for_winning_row).and_return(nil)
+        allow(game).to receive(:check_for_winning_column).and_return(nil)
+      end
+
+      it 'returns false' do
+        result = game.somebody_won?
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#get_winner_name' do
+    context 'when player 1 won' do
+      before do
+        player_1_stone = "\u263A"
+        allow(game).to receive(:check_for_winning_diagonal).and_return(player_1_stone)
+        allow(game).to receive(:check_for_winning_row).and_return(nil)
+        allow(game).to receive(:check_for_winning_column).and_return(nil)
+      end
+
+      it 'it returns player 1 name' do
+        result = game.get_winner_name
+        expect(result).to eq(player_1.name)
+      end
+    end
+
+    before do
+      player_2_stone = "\u263B"
+      allow(game).to receive(:check_for_winning_diagonal).and_return(player_2_stone)
+      allow(game).to receive(:check_for_winning_row).and_return(nil)
+      allow(game).to receive(:check_for_winning_column).and_return(nil)
+    end
+
+    context 'when player 2 won' do
+      it 'it returns player 2 name' do
+        result = game.get_winner_name
+        expect(result).to eq(player_2.name)
+      end
+    end
+  end
 end

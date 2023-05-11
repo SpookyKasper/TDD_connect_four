@@ -227,26 +227,53 @@ describe Board do
   end
 
   describe '#is_full?' do
-    context 'when board is full' do
+    context 'when board is empty' do
+
       before do
         board.instance_variable_set(:@board, board.create_board)
         board.instance_variable_set(:@empty_cell, 'O')
       end
+
+      it 'returns false' do
+        result = board.is_full?
+        expect(result).to eq(false)
+      end
+    end
+
+    context 'when board is full' do
+
+      before do
+        my_board = [
+          ['X', 'X', 'X', 'P'],
+          ['X', 'X', 'X', 'P'],
+          ['X', 'X', 'X', 'P'],
+          ['X', 'X', 'X', 'P']
+      ]
+        board.instance_variable_set(:@board, my_board)
+        board.instance_variable_set(:@empty_cell, 'O')
+      end
+
       it 'returns true' do
         result = board.is_full?
         expect(result).to eq(true)
       end
     end
 
-    context 'when board is empty' do
+    context 'when board is almost full' do
+      before do
+        my_board = [
+          ['O', 'O', 'X', 'P'],
+          ['X', 'X', 'X', 'P'],
+          ['X', 'X', 'X', 'P'],
+          ['X', 'X', 'X', 'P']
+      ]
+        board.instance_variable_set(:@board, my_board)
+        board.instance_variable_set(:@empty_cell, 'O')
+      end
+
       it 'returns false' do
         result = board.is_full?
-        expect(result).to eq(false )
-      end
-    end
-
-    context 'when board is almost full' do
-      it 'returns false' do
+        expect(result).to eq(false)
       end
     end
   end

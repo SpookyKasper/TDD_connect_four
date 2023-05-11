@@ -11,6 +11,14 @@ class Connect_Four_Game
     @winner = nil
   end
 
+  def play
+    introduction
+  end
+
+  def introduction
+    pick_color
+  end
+
   def game_over?
     !@winner.nil? || @board.is_full?
   end
@@ -55,6 +63,22 @@ class Connect_Four_Game
   end
 
   def check_for_winning_diagonal
-    diagonals = @board.board.get_diagonals
+    stone = nil
+    diagonals = @board.get_board_diagonals
+    diagonals.each do |diagonal|
+      stone = four_consecutives(diagonal)
+
+      break if stone
+    end
+    stone
+  end
+
+  def somebody_won?
+    [check_for_winning_row, check_for_winning_column, check_for_winning_diagonal].any?
+  end
+
+  def get_winner_name
+    stone = check_for_winning_row || check_for_winning_column || check_for_winning_diagonal
+    stone == @player_1.color ? @player_1.name : @player_2.name
   end
 end

@@ -71,5 +71,6 @@ class Board
   end
 
   def is_full?
+    @board.flatten.none? { |el| el == @empty_cell}
   end
 end
