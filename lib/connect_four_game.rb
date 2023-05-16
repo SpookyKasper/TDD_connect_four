@@ -4,6 +4,9 @@ require_relative '../lib/connect_four_player.rb'
 require 'matrix'
 
 class Connect_Four_Game
+  BLACK_SMILEY = "\u263A"
+  WHITE_SMILEY = "\u263B"
+
   def initialize(board, player_1, player_2)
     @board = board
     @player_1 = player_1
@@ -12,17 +15,32 @@ class Connect_Four_Game
   end
 
   def play
-    introduction
+    set_up_colors
   end
 
-  def introduction
-    pick_color
+  def set_up_colors
+    pick_color_message
+    @player_1.color = @player_1.pick_color
+    @player_2.color = left_color
+    puts 'Cool '
   end
 
   def game_over?
     !@winner.nil? || @board.is_full?
   end
 
+  def somebody_won?
+    [check_for_winning_row, check_for_winning_column, check_for_winning_diagonal].any?
+  end
+
+  def get_winner_name
+    stone = check_for_winning_row || check_for_winning_column || check_for_winning_diagonal
+    stone == @player_1.color ? @player_1.name : @player_2.name
+  end
+
+  def left_color
+    @player_1.color == BLACK_SMILEY ? WHITE_SMILEY : BLACK_SMILEY
+  end
 
   def four_consecutives(array)
     consecutives = 1
@@ -37,8 +55,6 @@ class Connect_Four_Game
     end
     consecutives >= 4 ? stone : nil
   end
-
-
 
   def check_for_winning_row
     stone = nil
@@ -73,12 +89,22 @@ class Connect_Four_Game
     stone
   end
 
-  def somebody_won?
-    [check_for_winning_row, check_for_winning_column, check_for_winning_diagonal].any?
+  def input_name
   end
 
-  def get_winner_name
-    stone = check_for_winning_row || check_for_winning_column || check_for_winning_diagonal
-    stone == @player_1.color ? @player_1.name : @player_2.name
+  def pick_color_message
+    puts <<~HEREDOC
+
+      \e[93mHey there connect four enthusiasts! ready for rumble?
+      Please be so kind and agree on who will play first.
+      And please type the tame of the first player \e[0m
+
+
+        And now dear, which color would you like to pick?
+
+        \e[32m[1]\e[0m Black
+        \e[32m[2]\e[0m White
+
+    HEREDOC
   end
 end

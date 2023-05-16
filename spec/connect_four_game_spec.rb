@@ -467,4 +467,39 @@ describe Connect_Four_Game do
       end
     end
   end
+
+  describe '#left_color' do
+    context 'when player_1 picks black smiley' do
+      let(:player_1) { instance_double(Player, name: 'Daniel', color: "\u263A") }
+      let(:player_2) { instance_double(Player, name: 'Ivan', color: nil) }
+
+      it 'returns white smiley' do
+        white_smiley = "\u263B"
+        result = game.left_color
+        expect(result).to eq(white_smiley)
+      end
+    end
+
+    context 'when player_2 picks whites smilye' do
+      let(:player_1) { instance_double(Player, name: 'Daniel', color: "\u263B") }
+      let(:player_2) { instance_double(Player, name: 'Ivan') }
+
+      it 'returns black smiley' do
+        black_smiley_unicode = "\u263A"
+        result = game.left_color
+        expect(result).to eq(black_smiley_unicode)
+      end
+    end
+  end
+
+  describe '#get_player_name' do
+    context 'when player inputs a valid name' do
+      before do
+      end
+      'it returns the name' do
+        result = game.get_player_name
+        expect(result).to eq('Daniel')
+      end
+    end
+  end
 end
