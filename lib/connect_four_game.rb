@@ -1,7 +1,6 @@
 
 require_relative '../lib/connect_four_board.rb'
 require_relative '../lib/connect_four_player.rb'
-require 'matrix'
 
 class Connect_Four_Game
   BLACK_SMILEY = "\u263A"
@@ -89,7 +88,18 @@ class Connect_Four_Game
     stone
   end
 
-  def input_name
+  def get_player_name
+    loop do
+      input = gets.chomp
+      verified_input = input if verify_input(input)
+      return verified_input if verified_input
+
+      puts 'Please input only letters or numbers'
+    end
+  end
+
+  def verify_input(input)
+    input.match?(/^[a-zA-Z0-9]+$/)
   end
 
   def pick_color_message

@@ -495,10 +495,34 @@ describe Connect_Four_Game do
   describe '#get_player_name' do
     context 'when player inputs a valid name' do
       before do
+        valid_name = 'Daniel'
+        allow(game).to receive(:gets).and_return(valid_name)
+        allow(game).to receive(:verify_input).with(valid_name).and_return(true)
       end
-      'it returns the name' do
+
+      it 'returns the name' do
         result = game.get_player_name
         expect(result).to eq('Daniel')
+      end
+
+      it 'completes loop without displaying error message' do
+        error_message = 'Please input only letters or numbers'
+        expect(game).not_to receive(:puts).with(error_message)
+        game.get_player_name
+      end
+    end
+
+    context 'when player inputs a invalid and then a valid name' do
+      before do
+        invalid_name = '#=1daniel'
+        valid_name = 'daniel'
+        allow(game).to receive(:gets).and_return(invalid_name, valid_name)
+      end
+
+      it 'completes the loop and display error message once' do
+        error_message = 'Please input only letters or numbers'
+        expect(game).to receive(:puts).with(error_message).once
+        game.get_player_name
       end
     end
   end
