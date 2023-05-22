@@ -468,30 +468,6 @@ describe Connect_Four_Game do
     end
   end
 
-  describe '#left_color' do
-    context 'when player_1 picks black smiley' do
-      let(:player_1) { instance_double(Player, name: 'Daniel', color: "\u263A") }
-      let(:player_2) { instance_double(Player, name: 'Ivan', color: nil) }
-
-      it 'returns white smiley' do
-        white_smiley = "\u263B"
-        result = game.left_color
-        expect(result).to eq(white_smiley)
-      end
-    end
-
-    context 'when player_2 picks whites smilye' do
-      let(:player_1) { instance_double(Player, name: 'Daniel', color: "\u263B") }
-      let(:player_2) { instance_double(Player, name: 'Ivan') }
-
-      it 'returns black smiley' do
-        black_smiley_unicode = "\u263A"
-        result = game.left_color
-        expect(result).to eq(black_smiley_unicode)
-      end
-    end
-  end
-
   describe '#get_player_name' do
     context 'when player inputs a valid name' do
       before do
@@ -566,6 +542,36 @@ describe Connect_Four_Game do
       it 'returns 3' do
         result = game.count_stones(player_1)
         expect(result).to eq(3)
+      end
+    end
+  end
+
+  describe '#is_playing' do
+    context 'when player 1 played more' do
+      before do
+        num_stones_player_1 = 3
+        num_stones_player_2 = 2
+        allow(game).to receive(:count_stones).with(player_1).and_return(num_stones_player_1)
+        allow(game).to receive(:count_stones).with(player_2).and_return(num_stones_player_2)
+      end
+      it 'returns player 2' do
+        result = game.is_playing
+        expect(result).to eq(player_2)
+      end
+    end
+
+    context 'when player 1 played as much' do
+
+      before do
+        num_stones_player_1 = 3
+        num_stones_player_2 = 3
+        allow(game).to receive(:count_stones).with(player_1).and_return(num_stones_player_1)
+        allow(game).to receive(:count_stones).with(player_2).and_return(num_stones_player_2)
+      end
+
+      it 'returns player 1' do
+        result = game.is_playing
+        expect(result).to eq(player_1)
       end
     end
   end

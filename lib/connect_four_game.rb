@@ -19,12 +19,14 @@ class Connect_Four_Game
       @board.display_board
       play_round
     end
-    game_over_message
+    # game_over_message
   end
 
   def play_round
-
-    @player_1.pick_column
+    player = is_playing
+    column = player.pick_column
+    stone = player.color
+    @board.place_stone(column, stone)
   end
 
   def get_player_name
@@ -47,8 +49,13 @@ class Connect_Four_Game
 
   def set_up_colors
     pick_color_message
-    @player_1.color = @player_1.pick_color
-    @player_2.color = left_color
+    if @player_1.pick_color_num == '1'
+      @player_1.color == BLACK_SMILEY
+      @player_2.color == WHITE_SMILEY
+    else
+      @player_1.color == WHITE_SMILEY
+      @player_2.color == BLACK_SMILEY
+    end
     puts "Cool so #{@player_1.name} you'll be playing with the #{@player_1.color} stone"
     puts "Ans #{@player_2.name} you'll be playing with the #{@player_2.color} stone"
     puts "Let's go!"
@@ -67,10 +74,6 @@ class Connect_Four_Game
     stone == @player_1.color ? @player_1.name : @player_2.name
   end
 
-  def left_color
-    @player_1.color == BLACK_SMILEY ? WHITE_SMILEY : BLACK_SMILEY
-  end
-
   def four_consecutives(array)
     consecutives = 1
     empty_cell = @board.empty_cell
@@ -87,6 +90,10 @@ class Connect_Four_Game
 
   def count_stones(player)
     @board.board.flatten.count(player.color)
+  end
+
+  def is_playing
+    count_stones(@player_1) == count_stones(@player_2) ? @player_1 : @player_2
   end
 
   def check_for_winning_row
@@ -137,6 +144,14 @@ class Connect_Four_Game
     HEREDOC
   end
 
+  def pick_column_message
+    puts <<~HEREDOC
+
+      \e[93mSo #{self.name} in whic column do you want to play your stone?
+      Please pick a column number from 1 to 7\e[0m
+    HEREDOC
+  end
+
   def pick_name_message
     puts <<~HEREDOC
 
@@ -146,5 +161,4 @@ class Connect_Four_Game
 
     HEREDOC
   end
-
 end

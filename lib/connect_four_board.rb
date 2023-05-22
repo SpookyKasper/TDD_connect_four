@@ -3,8 +3,8 @@ class Board
   attr_reader :board, :empty_cell
 
   def initialize
-    @board = create_board
     @empty_cell = 'O'
+    @board = create_board
   end
 
   def create_board
@@ -12,6 +12,7 @@ class Board
   end
 
   def display_board
+    puts [1, 2, 3, 4, 5, 6, 7].join(' | ')
     @board.each do |row|
       puts row.join(' | ')
     end
@@ -26,7 +27,9 @@ class Board
 
   def find_free_row_index(column, empty_cell)
     busy_row = column.find_index { |cell| cell != @empty_cell}
+    p busy_row
     free_row = busy_row.nil? ? column.size - 1 : busy_row - 1
+    p free_row
     free_row < 0 ? nil : free_row
   end
 
