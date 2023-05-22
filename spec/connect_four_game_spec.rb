@@ -526,4 +526,47 @@ describe Connect_Four_Game do
       end
     end
   end
+
+  describe '#is_playing' do
+  end
+
+  describe '#count_stones' do
+    let(:board) { instance_double(Board, empty_cell: 'O') }
+    let(:player_1) { instance_double(Player, name: 'Daniel', color: "X")}
+    let(:player_2) { instance_double(Player, name: 'Ivan', color: "M")}
+    subject(:game) { described_class.new(board, player_1, player_2) }
+
+    context 'when the player did no play yet' do
+      before do
+        allow(board).to receive(:board).and_return(
+          [['O', 'O', 'O', 'O', 'O', 'O'],
+          ['O', 'O', 'O', 'O', 'O', 'O'],
+          ['O', 'O', 'O', 'O', 'O', 'O'],
+          ['O', 'O', 'O', 'O', 'O', 'O'],
+          ['O', 'O', 'O', 'O', 'O', 'O'],
+          ['O', 'O', 'O', 'O', 'O', 'O']]
+        )
+      end
+      it 'returns 0' do
+        result = game.count_stones(player_1)
+        expect(result).to eq(0)
+      end
+    end
+    context 'when the player played 3 times' do
+      before do
+        allow(board).to receive(:board).and_return(
+          [['O', 'O', 'O', 'O', 'O', 'O'],
+          ['O', 'O', 'O', 'O', 'X', 'O'],
+          ['O', 'O', 'O', 'O', 'O', 'O'],
+          ['O', 'O', 'O', 'X', 'O', 'O'],
+          ['O', 'O', 'O', 'O', 'O', 'O'],
+          ['O', 'O', 'X', 'O', 'O', 'O']]
+        )
+      end
+      it 'returns 3' do
+        result = game.count_stones(player_1)
+        expect(result).to eq(3)
+      end
+    end
+  end
 end

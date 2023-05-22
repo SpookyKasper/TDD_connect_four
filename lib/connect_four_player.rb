@@ -3,8 +3,7 @@ class Player
   BLACK_SMILEY = "\u263A"
   WHITE_SMILEY = "\u263B"
 
-  attr_reader :name
-  attr_accessor :color
+  attr_accessor :color, :name
 
   def initialize(name = 'Player', color = nil)
     @name = name
