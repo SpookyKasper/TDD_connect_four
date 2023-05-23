@@ -13,23 +13,22 @@ class Board
 
   def display_board
     puts [1, 2, 3, 4, 5, 6, 7].join(' | ')
+    puts
     @board.each do |row|
       puts row.join(' | ')
     end
   end
 
   def place_stone(column_num, stone)
-    column = @board.transpose[column_num]
+    col_index = column_num - 1
+    column = @board.transpose[col_index]
     row_index = find_free_row_index(column, @empty_cell)
-    column_index = column_num - 1
-    @board[row_index][column_index] = stone
+    @board[row_index][col_index] = stone
   end
 
   def find_free_row_index(column, empty_cell)
     busy_row = column.find_index { |cell| cell != @empty_cell}
-    p busy_row
     free_row = busy_row.nil? ? column.size - 1 : busy_row - 1
-    p free_row
     free_row < 0 ? nil : free_row
   end
 

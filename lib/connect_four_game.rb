@@ -13,7 +13,7 @@ class Connect_Four_Game
   end
 
   def play
-    set_up_player_names
+    # set_up_player_names
     set_up_colors
     until game_over?
       @board.display_board
@@ -24,8 +24,10 @@ class Connect_Four_Game
 
   def play_round
     player = is_playing
-    column = player.pick_column
+    pick_column_message(player)
+    column = player.pick_column_num.to_i
     stone = player.color
+    p column
     @board.place_stone(column, stone)
   end
 
@@ -50,11 +52,11 @@ class Connect_Four_Game
   def set_up_colors
     pick_color_message
     if @player_1.pick_color_num == '1'
-      @player_1.color == BLACK_SMILEY
-      @player_2.color == WHITE_SMILEY
+      @player_1.color = BLACK_SMILEY
+      @player_2.color = WHITE_SMILEY
     else
-      @player_1.color == WHITE_SMILEY
-      @player_2.color == BLACK_SMILEY
+      @player_1.color = WHITE_SMILEY
+      @player_2.color = BLACK_SMILEY
     end
     puts "Cool so #{@player_1.name} you'll be playing with the #{@player_1.color} stone"
     puts "Ans #{@player_2.name} you'll be playing with the #{@player_2.color} stone"
@@ -62,7 +64,7 @@ class Connect_Four_Game
   end
 
   def game_over?
-    !@winner.nil? || @board.is_full?
+    somebody_won? || @board.is_full?
   end
 
   def somebody_won?
@@ -144,10 +146,10 @@ class Connect_Four_Game
     HEREDOC
   end
 
-  def pick_column_message
+  def pick_column_message(player)
     puts <<~HEREDOC
 
-      \e[93mSo #{self.name} in whic column do you want to play your stone?
+      \e[93mSo #{player.name} in which column do you want to play your stone?
       Please pick a column number from 1 to 7\e[0m
     HEREDOC
   end
