@@ -13,13 +13,24 @@ class Connect_Four_Game
   end
 
   def play
-    # set_up_player_names
+    set_up_player_names
     set_up_colors
     until game_over?
       @board.display_board
       play_round
     end
-    # game_over_message
+    @board.display_board
+    game_over_message
+  end
+
+  def game_over_message
+    if somebody_won?
+      winning_stone = check_for_winning_row || check_for_winning_diagonal || check_for_winning_column
+      @winner = winning_stone == @player_1.color ? @player_1.name : @player_2.name
+      puts "Congratulations #{@winner} you won the game!"
+    else
+      puts 'Bravo people! it is a tie!'
+    end
   end
 
   def play_round
@@ -27,7 +38,6 @@ class Connect_Four_Game
     pick_column_message(player)
     column = player.pick_column_num.to_i
     stone = player.color
-    p column
     @board.place_stone(column, stone)
   end
 
@@ -42,11 +52,12 @@ class Connect_Four_Game
   end
 
   def set_up_player_names
-    pick_name_message
+    ask_player_one_name_message
     @player_1.name = get_player_name
-    puts "And what about you player two?"
+    ask_player_two_name_message
     @player_2.name = get_player_name
-    puts "Cool so #{@player_1.name} and #{@player_2.name}, are you ready for rumble?"
+    puts
+    puts "\e[93mCool so #{@player_1.name} and #{@player_2.name} let's get started!\e[0m"
   end
 
   def set_up_colors
@@ -151,15 +162,24 @@ class Connect_Four_Game
 
       \e[93mSo #{player.name} in which column do you want to play your stone?
       Please pick a column number from 1 to 7\e[0m
+
     HEREDOC
   end
 
-  def pick_name_message
+  def ask_player_one_name_message
     puts <<~HEREDOC
 
     \e[93mHey there connect four enthusiasts! ready for rumble?
-      Please be so kind and agree on who will play first.
-      And please type the tame of the first player \e[0m
+    Please be so kind and agree on who will play first.
+    And please type the name of the first player \e[0m
+
+    HEREDOC
+  end
+
+  def ask_player_two_name_message
+    puts <<~HEREDOC
+
+    \e[93mAnd what about you player two?\e[0m"
 
     HEREDOC
   end
