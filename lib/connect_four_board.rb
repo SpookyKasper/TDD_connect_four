@@ -32,6 +32,12 @@ class Board
     free_row < 0 ? nil : free_row
   end
 
+  def column_is_free?(column_num)
+    column = @board.transpose[column_num - 1]
+    free_row = find_free_row_index(column, @empty_cell)
+    !free_row.nil?
+  end
+
   def get_positive_diagonal(start_coordinates)
     diagonal = []
     start_row, start_column = start_coordinates
