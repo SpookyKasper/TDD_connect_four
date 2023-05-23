@@ -3,7 +3,7 @@ class Board
   attr_reader :board, :empty_cell
 
   def initialize
-    @empty_cell = 'O'
+    @empty_cell = 'o'
     @board = create_board
   end
 

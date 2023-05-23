@@ -155,7 +155,7 @@ class Connect_Four_Game
   def pick_color_message
     puts <<~HEREDOC
 
-        \e[93mAnd now dear #{@player_1.name}, which color would you like to pick\e[0m?
+        \e[93m#{@player_1.name}, which color would you like to pick\e[0m?
 
         \e[32m[1]\e[0m Black
         \e[32m[2]\e[0m White
