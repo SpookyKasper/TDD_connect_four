@@ -24,7 +24,6 @@ class Player
       puts 'Please pick a valid column number, between 1 and 7'
       input = gets.chomp
     end
-
     input
   end
 end

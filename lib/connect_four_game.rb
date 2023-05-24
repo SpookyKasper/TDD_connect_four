@@ -14,12 +14,16 @@ class Connect_Four_Game
 
   def play
     initial_set_up
+    game_loop
+    @board.display_board
+    game_over_message
+  end
+
+  def game_loop
     until game_over?
       @board.display_board
       play_round
     end
-    @board.display_board
-    game_over_message
   end
 
   def game_over_message
@@ -29,7 +33,7 @@ class Connect_Four_Game
       puts
       puts "\e[93mCongratulations #{@winner} you won the game!\e[0m"
     else
-      puts "\e[93mBravo people! it is a tie![0m"
+      puts "\e[93mBravo people! it is a tie!\[0m"
     end
   end
 
@@ -53,13 +57,12 @@ class Connect_Four_Game
   end
 
   def get_player_name
-    loop do
-      input = gets.chomp
-      verified_input = input if verify_input(input)
-      return verified_input if verified_input
-
+    input = gets.chomp
+    until verify_input(input)
       puts 'Please input only letters or numbers'
+      input = gets.chomp
     end
+    input
   end
 
   def set_up_player_names
